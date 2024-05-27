@@ -150,7 +150,8 @@ async function gerar_cobranca(req, res) {
 
 async function gerar_qrcode(req, res) {
 	
-	const locId = req.params.locId
+	const locId = req
+    .params.locId
 
 	try {
 
@@ -165,7 +166,27 @@ async function gerar_qrcode(req, res) {
 
 }
 
+async function gerar_qrcode_mobile(req, res) {
+
+    data = req.body
+
+    try {
+		token = await getAccessToken()
+		const response_cob = await create_cob(token, data)
+        console.log(response_cob.loc.id)
+        const response_qrcode = await getQrcode(token, response_cob.loc.id)
+        const retorno = response_qrcode.imagemQrcode
+		res.status(200).json({retorno})
+	
+	} catch (error) {
+		console.error('erro na cobrança', error)
+    	res.status(500).json({ error: 'Erro interno do servidor' })
+	}
+
+}
+
 module.exports = {
     gerar_cobranca,
-	gerar_qrcode
+	gerar_qrcode,
+    gerar_qrcode_mobile
 }

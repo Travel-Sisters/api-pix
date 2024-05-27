@@ -11,4 +11,8 @@ router.get('/qrcode/:locId', (req, res) => {
     pixController.gerar_qrcode(req, res)
 })
 
+router.post('/cob-mobile', (req, res) => {
+    pixController.gerar_qrcode_mobile(req, res)
+})
+
 module.exports = router
